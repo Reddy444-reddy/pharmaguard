@@ -1,9 +1,12 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, g
 from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import tempfile
 import os
 import logging
 from datetime import datetime
+import uuid
 
 from config import Config
 from validators import allowed_file, validate_drug, validate_patient_id, validate_vcf_file
@@ -18,13 +21,27 @@ app = Flask(__name__)
 app.config.from_object(Config)
 CORS(app)
 
+# Rate limiting setup
+limiter = Limiter(
+    app=app,
+    key_func=get_remote_address,
+    default_limits=["200 per day", "50 per hour"]
+)
+
 # Logging setup
 logging.basicConfig(
     filename=Config.LOG_FILE,
     level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
+
+# Request ID middleware for tracing
+@app.before_request
+def assign_request_id():
+    """Assign unique ID to each request for audit tracing"""
+    g.request_id = str(uuid.uuid4())
+    logger.info(f"[{g.request_id}] {request.method} {request.path} from {get_remote_address()}")
 
 
 @app.route("/health", methods=["GET"])
@@ -37,6 +54,7 @@ def health_check():
 
 
 @app.route("/analyze", methods=["POST"])
+@limiter.limit("20 per hour")
 def analyze():
     """
     Main pharmacogenomic analysis endpoint.
@@ -54,8 +72,8 @@ def analyze():
         # Validate patient_id
         patient_id = request.form.get("patient_id", "").strip()
         if not validate_patient_id(patient_id):
-            logger.warning("Invalid patient_id attempted")
-            return validation_error("patient_id", "Patient ID is required and must be non-empty")
+            logger.warning(f"[{g.request_id}] Invalid patient_id attempted")
+            return validation_error("patient_id", "Patient ID is required and must be non-empty", g.request_id)
         
         # Validate drug
         drug = request.form.get("drug", "").strip()
@@ -128,7 +146,7 @@ def analyze():
             
             # Log successful analysis
             logger.info(
-                f"Analysis completed - Patient: {patient_id}, Drug: {drug}, "
+                f"[{g.request_id}] Analysis completed - Patient: {patient_id}, Drug: {drug}, "
                 f"Gene: {gene}, Diplotype: {diplotype}, Phenotype: {phenotype}, "
                 f"Risk: {risk_data['risk_label']}"
             )
@@ -141,11 +159,11 @@ def analyze():
                 try:
                     os.remove(vcf_path)
                 except Exception as e:
-                    logger.warning(f"Failed to delete temp file {vcf_path}: {e}")
+                    logger.warning(f"[{g.request_id}] Failed to delete temp file {vcf_path}: {e}")
     
     except Exception as e:
-        logger.error(f"Unexpected error during analysis: {str(e)}", exc_info=True)
-        return server_error(f"Unexpected error: {str(e)}")
+        logger.error(f"[{g.request_id}] Unexpected error during analysis: {str(e)}", exc_info=True)
+        return server_error(f"Unexpected error: {str(e)}", g.request_id)
 
 
 @app.errorhandler(404)

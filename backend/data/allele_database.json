@@ -1,0 +1,117 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "last_updated": "2026-02-19",
+    "source": "CPIC Guidelines",
+    "disclaimer": "For clinical decision support only. Not for direct patient care without clinician review."
+  },
+  "phenotype_mappings": {
+    "CYP2D6": {
+      "*1/*1": {
+        "phenotype": "NM",
+        "label": "Normal Metabolizer",
+        "description": "Enzyme activity is normal"
+      },
+      "*1/*4": {
+        "phenotype": "IM",
+        "label": "Intermediate Metabolizer",
+        "description": "Enzyme activity reduced (50%)"
+      },
+      "*4/*4": {
+        "phenotype": "PM",
+        "label": "Poor Metabolizer",
+        "description": "Little to no enzyme activity"
+      },
+      "*1/*2xN": {
+        "phenotype": "URM",
+        "label": "Ultra-Rapid Metabolizer",
+        "description": "Enzyme activity highly increased (>100%)"
+      }
+    },
+    "CYP2C19": {
+      "*1/*1": {
+        "phenotype": "NM",
+        "label": "Normal Metabolizer",
+        "description": "Enzyme activity is normal"
+      },
+      "*1/*2": {
+        "phenotype": "IM",
+        "label": "Intermediate Metabolizer",
+        "description": "Enzyme activity reduced"
+      },
+      "*2/*2": {
+        "phenotype": "PM",
+        "label": "Poor Metabolizer",
+        "description": "Little to no enzyme activity"
+      }
+    },
+    "CYP2C9": {
+      "*1/*1": {
+        "phenotype": "NM",
+        "label": "Normal Metabolizer",
+        "description": "Enzyme activity is normal"
+      },
+      "*1/*3": {
+        "phenotype": "IM",
+        "label": "Intermediate Metabolizer",
+        "description": "Enzyme activity reduced"
+      },
+      "*3/*3": {
+        "phenotype": "PM",
+        "label": "Poor Metabolizer",
+        "description": "Little to no enzyme activity"
+      }
+    },
+    "SLCO1B1": {
+      "*1a/*1a": {
+        "phenotype": "NM",
+        "label": "Normal Transport Activity",
+        "description": "Normal hepatic uptake"
+      },
+      "*1a/*1b": {
+        "phenotype": "IM",
+        "label": "Intermediate Transport Activity",
+        "description": "Reduced hepatic uptake"
+      },
+      "*1b/*1b": {
+        "phenotype": "PM",
+        "label": "Low Transport Activity",
+        "description": "Reduced hepatic uptake"
+      }
+    },
+    "TPMT": {
+      "*1/*1": {
+        "phenotype": "NM",
+        "label": "Normal Metabolizer",
+        "description": "High enzyme activity"
+      },
+      "*1/*3": {
+        "phenotype": "IM",
+        "label": "Intermediate Metabolizer",
+        "description": "Medium enzyme activity"
+      },
+      "*3/*3": {
+        "phenotype": "PM",
+        "label": "Poor Metabolizer",
+        "description": "Low or absent enzyme activity"
+      }
+    },
+    "DPYD": {
+      "*1/*1": {
+        "phenotype": "NM",
+        "label": "Normal Metabolizer",
+        "description": "Normal dihydropyrimidine dehydrogenase activity"
+      },
+      "*1/*2": {
+        "phenotype": "IM",
+        "label": "Intermediate Metabolizer",
+        "description": "Reduced enzyme activity"
+      },
+      "*2/*2": {
+        "phenotype": "PM",
+        "label": "Poor Metabolizer",
+        "description": "Severely reduced or absent enzyme activity"
+      }
+    }
+  }
+}

@@ -1,10 +1,17 @@
 from config import Config
+from werkzeug.utils import secure_filename
 
 
 def allowed_file(filename):
-    """Validate file extension"""
+    """Validate file extension and filename safety"""
     if not filename or "." not in filename:
         return False
+    
+    # Prevent path traversal attacks
+    safe_name = secure_filename(filename)
+    if safe_name != filename:
+        return False
+    
     ext = filename.rsplit(".", 1)[1].lower()
     return ext in Config.ALLOWED_EXTENSIONS
 
