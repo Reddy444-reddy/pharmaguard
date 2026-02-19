@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PharmaGuard Demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .card { border: 1px solid #ddd; padding: 12px; border-radius: 6px; margin-bottom: 12px; }
+    .risk-safe { background:#e6ffed; border-left:6px solid #28a745 }
+    .risk-moderate { background:#fff7e6; border-left:6px solid #ff8c00 }
+    .risk-high { background:#ffe6e6; border-left:6px solid #dc3545 }
+    .controls { margin-bottom:16px }
+    label { display:block; margin-bottom:6px }
+  </style>
+</head>
+<body>
+  <h1>PharmaGuard - Demo</h1>
+
+  <div class="controls">
+    <label>Patient ID: <input id="patient_id" value="P001" /></label>
+    <label>Drug: 
+      <select id="drug_select">
+        <option>CODEINE</option>
+        <option>WARFARIN</option>
+        <option>CLOPIDOGREL</option>
+        <option>SIMVASTATIN</option>
+        <option>AZATHIOPRINE</option>
+        <option>FLUOROURACIL</option>
+      </select>
+    </label>
+    <label>VCF file: <input type="file" id="vcf_file" accept=".vcf" /></label>
+    <button id="analyze">Analyze</button>
+  </div>
+
+  <div id="status"></div>
+  <div id="report"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
