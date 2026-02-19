@@ -17,9 +17,19 @@ from .phenotype_mapper import determine_phenotype
 from .pgx_rules import evaluate_risk
 from .response_builder import build_response
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    static_folder=os.path.normpath(os.path.join(os.path.dirname(__file__), '..', 'frontend')),
+    static_url_path=''
+)
 app.config.from_object(Config)
 CORS(app)
+
+
+# Serve demo frontend (index.html) for quick preview
+@app.route('/', methods=['GET'])
+def index():
+    return app.send_static_file('index.html')
 
 # Rate limiting setup
 limiter = Limiter(
