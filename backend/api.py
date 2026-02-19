@@ -8,14 +8,14 @@ import logging
 from datetime import datetime
 import uuid
 
-from config import Config
-from validators import allowed_file, validate_drug, validate_patient_id, validate_vcf_file
-from error_handler import error_response, validation_error, server_error
+from .config import Config
+from .validators import allowed_file, validate_drug, validate_patient_id, validate_vcf_file
+from .error_handler import error_response, validation_error, server_error
 
-from vcf_parser import parse_vcf
-from phenotype_mapper import determine_phenotype
-from pgx_rules import evaluate_risk
-from response_builder import build_response
+from .vcf_parser import parse_vcf
+from .phenotype_mapper import determine_phenotype
+from .pgx_rules import evaluate_risk
+from .response_builder import build_response
 
 app = Flask(__name__)
 app.config.from_object(Config)
